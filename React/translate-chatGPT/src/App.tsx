@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useStore } from './hooks/useStore'
+import { AUTO_LANGUAGE } from './constants'
+import { ArrowsIcon } from './components/icons'
+import { LanguageSelector } from './components/LanguageSelector'
+import { SectionType, type FromLanguage } from './types.d'
 
+function App () {
+  const { fromLanguage, toLanguage, interChageLanguges, setFromLanguage } = useStore()
+  const onChange = (value: FromLanguage) => {
+    setFromLanguage(value)
+  }
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <Container fluid>
+        <h1>Google Translate</h1>
+
+        <Row>
+          <Col>
+            <h2>From</h2>
+            <LanguageSelector value={fromLanguage} onChange={onChange} type={SectionType.From}/>
+          </Col>
+          <Col>
+            <Button variant='link' disabled={fromLanguage === AUTO_LANGUAGE} onClick={() => {
+              interChageLanguges()
+            }}>
+              <ArrowsIcon />
+            </Button>
+          </Col>
+          <Col>
+            <h2>To</h2>
+            {toLanguage}
+          </Col>
+        </Row>
+      </Container>
   )
 }
-
 export default App
