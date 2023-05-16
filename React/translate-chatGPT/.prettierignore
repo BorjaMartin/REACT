@@ -1,0 +1,7 @@
+node_modules/
+settings.json
+.vscode/
+.vscode/typings/meteor.d.ts
+.vscode/launch.json
+*.log
+*.html

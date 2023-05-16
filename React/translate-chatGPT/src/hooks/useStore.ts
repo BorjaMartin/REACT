@@ -6,10 +6,10 @@ const initialState: State = {
   toLanguage: 'en',
   fromText: '',
   result: '',
-  loading: false
+  loading: false,
 }
 
-export function reducer (state: State, action: Action) {
+export function reducer(state: State, action: Action) {
   const { type } = action
 
   if (type === 'INTERCHANGE_LANGUAGES') {
@@ -17,7 +17,7 @@ export function reducer (state: State, action: Action) {
     return {
       ...state,
       fromLanguage: state.toLanguage,
-      toLanguage: state.fromLanguage
+      toLanguage: state.fromLanguage,
     }
   }
 
@@ -25,41 +25,43 @@ export function reducer (state: State, action: Action) {
     return {
       ...state,
       loading: true,
-      fromLanguage: action.payload
+      fromLanguage: action.payload,
     }
   }
   if (type === 'SET_TO_LANGUAGE') {
     return {
       ...state,
-      loading: false,
-      result: action.payload
+      loading: true,
+      toLanguage: action.payload,
     }
   }
   if (type === 'SET_FROM_TEXT') {
+    const loading = action.payload !== ''
+
     return {
       ...state,
-      loading: false,
-      result: action.payload
+      loading,
+      fromText: action.payload,
+      result: '',
     }
   }
   if (type === 'SET_RESULT') {
     return {
       ...state,
       loading: false,
-      result: action.payload
+      result: action.payload,
     }
   }
 }
-export function useStore () {
-  const [{
-    fromLanguage,
-    toLanguage,
-    fromText,
-    result,
-    loading
-  }, dispatch] = useReducer(reducer, initialState)
+export function useStore() {
+  const [{ fromLanguage, toLanguage, fromText, result, loading }, dispatch] = useReducer(
+    reducer,
+    initialState
+  )
 
-  const interChageLanguges = () => { dispatch({ type: 'INTERCHANGE_LANGUAGES' }) }
+  const interChageLanguges = () => {
+    dispatch({ type: 'INTERCHANGE_LANGUAGES' })
+  }
 
   const setFromLanguage = (payload: FromLanguage) => {
     dispatch({ type: 'SET_FROM_LANGUAGE', payload })
@@ -84,6 +86,6 @@ export function useStore () {
     setFromLanguage,
     setToLanguage,
     setFromText,
-    setResult
+    setResult,
   }
 }
